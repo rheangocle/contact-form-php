@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,26 +16,47 @@
 
 <body>
 
-  <nav class="px-3 navbar navbar-expand-sm navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="index.php">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="discover.php">About us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="blog.php">Blogs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="signup.php">Sign up</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="login.php">Login</a>
-        </li>
-      </ul>
+  <nav class="px-3 navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <!-- <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button> -->
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.php">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="discover.php">About us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="blog.php">Blogs</a>
+          </li>
+
+          <?php
+          if (isset($_SESSION["useruid"])) {
+            echo "<li class='nav-item'>
+            <a class='nav-link' href='profile.php'>Profile</a>
+          </li>";
+            echo "<li class='nav-item navbar-right'>
+            <a class='nav-link' href='includes/logout.inc.php'>Log out</a>
+          </li>";
+          } else {
+            echo "<li class='nav-item'>
+          <a class='nav-link' href='signup.php'>Sign up</a>
+        </li>";
+            echo "<li class='nav-item'>
+          <a class='nav-link' href='login.php'>Login</a>
+        </li>";
+          }
+          ?>
+        </ul>
+
+        <?php
+        if (isset($_SESSION["useruid"])) {
+          echo "<ul class='nav navbar-nav navbar-right'>
+              <li><span>Welcome back, " . $_SESSION["useruid"] . "!</span></li></ul>";
+        }
+        ?>
+      </div>
     </div>
   </nav>

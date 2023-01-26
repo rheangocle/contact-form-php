@@ -1,6 +1,6 @@
 <?php
 
-// Checking if input fields are empty
+// Checking if signup input fields are empty
 function emptyInputSignup($name, $username, $email, $password, $passwordRepeat)
 {
   $result;
@@ -114,4 +114,41 @@ function createUser($conn, $name, $username, $email, $password)
   mysqli_stmt_close($stmt);
   header("location: ../signup.php?error=none");
   exit();
+}
+
+// Checking if login input fields are empty
+function emptyInputLogin($username, $password)
+{
+  $result;
+
+  if (empty($username) || empty($password)) {
+    $result = true;
+  } else {
+    $result = false;
+  }
+  return $result;
+}
+
+function loginUser($conn, $username, $password)
+{
+  $uidExists = uidExists($conn, $username, $username);
+
+  if ($uidExists === false) {
+    header("location: ../login.php?error=wronglogin");
+    exit();
+  }
+
+  $hashedPassword = $uidExists["password"];
+  $checkPassword = password_verify($password, $hashedPassword);
+
+  if ($checkPassword === false) {
+    header("location: ../login.php?error=wronglogin");
+    exit();
+  } else if ($checkPassword === true) {
+    session_start();
+    $_SESSION["userid"] = $uidExists["userId"];
+    $_SESSION["useruid"] = $uidExists["usersUid"];
+    header("location: ../index.php");
+    exit();
+  }
 }
